@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
 	implementation 'org.springframework.cloud:spring-cloud-starter-security'
+	implementation 'org.eclipse:yasson:1.0.3'
+	//compile group: 'org.eclipse', name: 'yasson', version: '1.0.3'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
