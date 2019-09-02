@@ -1,6 +1,5 @@
 package com.ztysdmy.authenticationservice;
 
-import java.io.ByteArrayInputStream;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URI;
@@ -9,17 +8,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.net.http.HttpResponse.BodySubscribers;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import com.ztysdmy.authenticationservice.model.Authentication;
+import com.ztysdmy.authenticationservice.utils.JsonBodyHandler;
 
 //https://golb.hplar.ch/2019/01/java-11-http-client.html
 public class AuthTest {
@@ -34,8 +33,20 @@ public class AuthTest {
 		
 		var httpClient = httpClientWithBasicAithentication();
 		
-		var response = httpClient.send(request, BodyHandlers.ofString());
-		System.out.println(response.body());
+		var response = httpClient.send(request, JsonBodyHandler.jsonBodyHandler(Authentication.class));
+		
+		Assert.assertNotNull(response.body());
+		
+		httpClient = httpClient();
+		
+		request = HttpRequest.newBuilder()
+				  .uri(new URI("http://localhost:8087/auth/user"))
+				  .header("Authorization", "Bearer "+response.body().getAccess_token())
+				  .GET().build();
+		
+		var response2 = httpClient.send(request, BodyHandlers.ofString());
+		//response2.body()
+		System.out.println(response2.body());
 	}
 	
 	
@@ -48,6 +59,12 @@ public class AuthTest {
 			}
 		}).build();
 		return client;
+	}
+	
+	
+	private HttpClient httpClient() {
+		
+		return HttpClient.newBuilder().build();
 	}
 	
 	private HashMap<String, String> formData() {
@@ -74,29 +91,4 @@ public class AuthTest {
 		return BodyPublishers.ofString(builder.toString());
 	}
 	
-	public static class JsonBodyHandler<T> implements HttpResponse.BodyHandler<T> {
-		  private final Jsonb jsonb;
-		  private final Class<T> type;
-
-		  public static <T> JsonBodyHandler<T> jsonBodyHandler(final Class<T> type) {
-		    return jsonBodyHandler(JsonbBuilder.create(), type);
-		  }
-
-		  public static <T> JsonBodyHandler<T> jsonBodyHandler(final Jsonb jsonb,
-		      final Class<T> type) {
-		    return new JsonBodyHandler<>(jsonb, type);
-		  }
-
-		  private JsonBodyHandler(Jsonb jsonb, Class<T> type) {
-		    this.jsonb = jsonb;
-		    this.type = type;
-		  }
-
-		  @Override
-		  public HttpResponse.BodySubscriber<T> apply(
-		      final HttpResponse.ResponseInfo responseInfo) {
-		    return BodySubscribers.mapping(BodySubscribers.ofByteArray(),
-		        byteArray -> this.jsonb.fromJson(new ByteArrayInputStream(byteArray), this.type));
-		  }
-		}
 }
