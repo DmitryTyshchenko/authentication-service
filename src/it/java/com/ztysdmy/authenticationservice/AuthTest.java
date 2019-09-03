@@ -40,7 +40,7 @@ public class AuthTest {
 		httpClient = httpClient();
 		
 		request = HttpRequest.newBuilder()
-				  .uri(new URI("http://localhost:8087/auth/user"))
+				  .uri(new URI("http://localhost:8087/user"))
 				  .header("Authorization", "Bearer "+response.body().getAccess_token())
 				  .GET().build();
 		
