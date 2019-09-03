@@ -13,7 +13,7 @@ public class AuthenticationTest {
 	@Test
 	public void shouldCreateAuthenticationFromOAthResponse() throws Exception {
 		Jsonb jsonb = JsonbBuilder.create();
-		Authentication authentication = jsonb.fromJson(OathResponse, Authentication.class);
+		Oauth2Token authentication = jsonb.fromJson(OathResponse, Oauth2Token.class);
 		Assert.assertNotNull(authentication);
 		Assert.assertEquals("43a999cf-45d8-4cc3-8442-c903426940f9", authentication.getAccess_token());
 	}

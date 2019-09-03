@@ -16,8 +16,10 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
-import com.ztysdmy.authenticationservice.model.Authentication;
+import com.ztysdmy.authenticationservice.model.Oauth2Token;
 import com.ztysdmy.authenticationservice.utils.JsonBodyHandler;
 
 //https://golb.hplar.ch/2019/01/java-11-http-client.html
@@ -33,19 +35,20 @@ public class AuthTest {
 		
 		var httpClient = httpClientWithBasicAithentication();
 		
-		var response = httpClient.send(request, JsonBodyHandler.jsonBodyHandler(Authentication.class));
+		var response = httpClient.send(request, JsonBodyHandler.jsonBodyHandler(Oauth2Token.class));
 		
 		Assert.assertNotNull(response.body());
 		
 		httpClient = httpClient();
 		
 		request = HttpRequest.newBuilder()
-				  .uri(new URI("http://localhost:8087/user"))
+				  .uri(new URI("http://localhost:8087/user/auth"))
 				  .header("Authorization", "Bearer "+response.body().getAccess_token())
 				  .GET().build();
 		
+		//TODO: convert response Json to Object
 		var response2 = httpClient.send(request, BodyHandlers.ofString());
-		//response2.body()
+		Assert.assertNotNull(response2.body());
 		System.out.println(response2.body());
 	}
 	
