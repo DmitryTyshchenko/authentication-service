@@ -16,8 +16,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import com.ztysdmy.authenticationservice.model.Oauth2Token;
 import com.ztysdmy.authenticationservice.utils.JsonBodyHandler;
