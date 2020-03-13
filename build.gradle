@@ -1,22 +1,20 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.0.BUILD-SNAPSHOT'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'org.springframework.boot' version '2.2.5.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id 'eclipse'
 }
 
 group = 'com.ztysdmy'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '12'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
-	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 ext {
-	set('springCloudVersion', "Hoxton.BUILD-SNAPSHOT")
+	set('springCloudVersion', "Hoxton.SR3")
 }
 
 dependencies {

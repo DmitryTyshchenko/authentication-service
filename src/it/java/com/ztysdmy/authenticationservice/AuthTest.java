@@ -36,6 +36,7 @@ public class AuthTest {
 		var response = httpClient.send(request, JsonBodyHandler.jsonBodyHandler(Oauth2Token.class));
 		
 		Assert.assertNotNull(response.body());
+		System.out.println(response.body().getAccess_token());
 		
 		httpClient = httpClient();
 		

@@ -23,7 +23,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("dima").password("{noop}dima").roles("USER");
+		auth.inMemoryAuthentication().withUser("dima").password("{noop}dima").roles("USER", "ADMIN");
 
 	}
 }
